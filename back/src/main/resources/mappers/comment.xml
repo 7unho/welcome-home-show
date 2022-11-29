@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.april2nd.homeshow.model.mapper.CommentMapper">
+
+    <insert id="registComment" parameterType="commentDto">
+        insert into comment(content, writer, articleno)
+        values (#{content}, #{writer}, #{articleno})
+    </insert>
+
+    <select id="getComment" parameterType="Integer" resultType="commentDto">
+        select no, writer, content, regtime
+        from comment
+        where articleno = #{articleno}
+    </select>
+
+    <delete id="deleteComment" parameterType="Integer">
+        delete
+        from comment
+        where no = #{no}
+    </delete>
+
+    <update id="modifyComment" parameterType="commentDto">
+        update comment
+        set content = #{content}
+        where no = #{no}
+    </update>
+</mapper>

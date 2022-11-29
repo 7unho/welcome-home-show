@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.april2nd.homeshow.model.mapper.MemberMapper">
+
+	<select id="login" parameterType="memberDto" resultType="memberDto">
+		select username, userid, email
+		from ssafy_member
+		where userid = #{userid} and userpwd = #{userpwd}
+	</select>
+
+	<select id="userInfo" parameterType="string" resultType="memberDto">
+		select username, userid, email, joindate, category
+		from ssafy_member
+		where userid = #{userid}
+	</select>
+
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from ssafy_member
+		where userid = #{userid}
+	</select>
+
+	<update id="saveRefreshToken" parameterType="map">
+		update ssafy_member
+		set token = #{token}
+		where userid = #{userid}
+	</update>
+
+	<update id="deleteRefreshToken" parameterType="map">
+		update ssafy_member
+		set token = #{token, jdbcType=VARCHAR}
+		where userid = #{userid}
+	</update>
+
+	<insert id="registUser" parameterType="memberDto">
+		insert
+		into ssafy_member(userid, userpwd, username, email)
+		values(#{userid}, #{userpwd}, #{username}, #{email})
+	</insert>
+
+	<delete id="removeUser" parameterType="String">
+		delete
+		from ssafy_member
+		where userid = #{userid}
+	</delete>
+
+
+	<select id="getBookmarkApt" parameterType="string" resultType="BookmarkDto">
+		select id,aptCode, (select aptName from houseinfo where houseinfo.aptCode = bookmark.aptCode) aptName, bookmarkedTime
+		from bookmark
+		where userid = #{userid}
+	</select>
+
+	<insert id="newBookmark" parameterType="string">
+		insert
+		into bookmark(userId, aptCode)
+		values(#{userId}, #{aptCode})
+	</insert>
+
+	<delete id="deleteBookmark" parameterType="String">
+		delete
+		from bookmark
+		where userId = #{userId}
+		  and aptCode = #{aptCode}
+	</delete>
+
+	<update id="updateUser" parameterType="memberDto">
+		update ssafy_member
+		set
+		    username = #{username},
+		    email = #{email},
+		where userid = #{userid}
+	</update>
+</mapper>
